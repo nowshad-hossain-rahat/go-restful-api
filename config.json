@@ -1,0 +1,10 @@
+{
+  "App": {
+    "Name": "Restful API",
+    "Port": "3030"
+  },
+  "MongoDB": {
+    "URI": "mongodb://localhost:27017",
+    "Name": "go_restful_api"
+  }
+}

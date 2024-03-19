@@ -1,0 +1,23 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "go: run",
+			"type": "shell",
+			"command": "run .",
+		},
+		{
+			"type": "go",
+			"label": "go: test package",
+			"command": "test",
+			"args": [
+				"${fileDirname}"
+			],
+			"problemMatcher": [
+				"$go"
+			],
+			"group": "test",
+			"detail": "cd /home/nowshad/Golang Projects/restful-api; go test ${fileDirname}"
+		}
+	]
+}
