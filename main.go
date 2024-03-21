@@ -1,18 +1,30 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/mongo"
 
 	"restful-api/config"
+	"restful-api/mids"
 	"restful-api/routes"
 )
 
 func main() {
-	var config config.Config = config.Load()
+	var cfg *config.Config = config.Load()
+
+	fmt.Println(*cfg)
 
 	router := gin.New()
 
-	routes.ConnectRoutes(router, &config)
+	router.Use(mids.CORSMiddleware())
 
-	router.Run(":" + config.App.Port)
+	apiRouter := router.Group("/api")
+
+	var db *mongo.Database = config.Connect(cfg)
+
+	routes.ConnectRoutes(apiRouter, cfg, db)
+
+	router.Run(":" + cfg.App.Port)
 }

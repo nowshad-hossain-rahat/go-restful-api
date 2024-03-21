@@ -7,22 +7,23 @@ import (
 )
 
 type App struct {
-	Name string
-	Port string
-	Root string
+	Name      string
+	Port      string
+	Root      string
+	JWTSecret string
 }
 
 type MongoDB struct {
-	URI string
+	URI  string
 	Name string
 }
 
 type Config struct {
-	App App
+	App     App
 	MongoDB MongoDB
 }
 
-func Load() Config {
+func Load() *Config {
 
 	cwd, err := os.Getwd()
 
@@ -40,9 +41,14 @@ func Load() Config {
 
 	var config Config = Config{
 		App: App{
-			Name: viper.GetString("App.Name"),
-			Port: viper.GetString("App.Port"),
-			Root: cwd,
+			Name:      viper.GetString("App.Name"),
+			Port:      viper.GetString("App.Port"),
+			JWTSecret: viper.GetString("App.JWTSecret"),
+			Root:      cwd,
+		},
+		MongoDB: MongoDB{
+			URI:  viper.GetString("MongoDB.URI"),
+			Name: viper.GetString("MongoDB.Name"),
 		},
 	}
 
@@ -54,6 +60,18 @@ func Load() Config {
 		config.App.Port = "3030"
 	}
 
-	return config
+	if config.App.JWTSecret == "" {
+		panic("[!] JWT Secret is empty")
+	}
+
+	if config.MongoDB.URI == "" {
+		config.MongoDB.URI = "mongodb://localhost:27017"
+	}
+
+	if config.MongoDB.Name == "" {
+		config.MongoDB.Name = "go_restful_api"
+	}
+
+	return &config
 
 }

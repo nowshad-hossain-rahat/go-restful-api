@@ -1,7 +1,8 @@
 {
   "App": {
     "Name": "Restful API",
-    "Port": "3030"
+    "Port": "3030",
+    "JWTSecret": "f235lkf23i4nejn34q$#@FnsdvkjW#@$@6342034"
   },
   "MongoDB": {
     "URI": "mongodb://localhost:27017",
