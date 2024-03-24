@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/spf13/viper"
@@ -18,9 +19,18 @@ type MongoDB struct {
 	Name string
 }
 
+type Smtp struct {
+	Host   string
+	Port   string
+	User   string
+	Pass   string
+	Secure bool
+}
+
 type Config struct {
 	App     App
 	MongoDB MongoDB
+	Smtp    Smtp
 }
 
 func Load() *Config {
@@ -28,7 +38,9 @@ func Load() *Config {
 	cwd, err := os.Getwd()
 
 	if err != nil {
+		fmt.Println("[!] CWD not found")
 		os.Exit(1)
+		return nil
 	}
 
 	viper.SetConfigFile(cwd + "/config.json")
@@ -36,7 +48,9 @@ func Load() *Config {
 	err = viper.ReadInConfig()
 
 	if err != nil {
+		fmt.Println("[!] Config file not found")
 		os.Exit(1)
+		return nil
 	}
 
 	var config Config = Config{
@@ -49,6 +63,13 @@ func Load() *Config {
 		MongoDB: MongoDB{
 			URI:  viper.GetString("MongoDB.URI"),
 			Name: viper.GetString("MongoDB.Name"),
+		},
+		Smtp: Smtp{
+			Host:   viper.GetString("Smtp.Host"),
+			Port:   viper.GetString("Smtp.Port"),
+			User:   viper.GetString("Smtp.User"),
+			Pass:   viper.GetString("Smtp.Pass"),
+			Secure: viper.GetBool("Smtp.Secure"),
 		},
 	}
 
@@ -70,6 +91,22 @@ func Load() *Config {
 
 	if config.MongoDB.Name == "" {
 		config.MongoDB.Name = "go_restful_api"
+	}
+
+	if config.Smtp.Host == "" {
+		config.Smtp.Host = "smtp.mail.yahoo.com"
+	}
+
+	if config.Smtp.Port == "" {
+		config.Smtp.Port = "587"
+	}
+
+	if config.Smtp.User == "" {
+		config.Smtp.User = "nhrprime@yahoo.com"
+	}
+
+	if config.Smtp.Pass == "" {
+		config.Smtp.Pass = ""
 	}
 
 	return &config

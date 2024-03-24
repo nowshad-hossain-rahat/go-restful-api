@@ -7,5 +7,12 @@
   "MongoDB": {
     "URI": "mongodb://localhost:27017",
     "Name": "go_restful_api"
+  },
+  "Smtp": {
+    "Host": "mail.nhrtech.net",
+    "Port": "587",
+    "User": "admin@nhrtech.net",
+    "Pass": "TZR5Gdqjh0ucQsPl3Y5E",
+    "Secure": false
   }
 }

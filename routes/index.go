@@ -7,8 +7,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func ConnectRoutes(router *gin.RouterGroup, cfg *config.Config, db *mongo.Database) {
+func ConnectRoutes(router *gin.Engine, apiRouter *gin.RouterGroup, cfg *config.Config, db *mongo.Database) {
 
-	UserRoutes(router, cfg, db)
+	HomeRoutes(router, cfg, db)
+	UserRoutes(apiRouter, cfg, db)
 
 }
